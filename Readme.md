@@ -1,3 +1,9 @@
+# Tech Stack Used
+- Nextjs 14 ,app Router Ssr
+- Django DRF Sqlite 
+- 
+
+
 # Backend
 
 - Choose one of the following Python web frameworks: Django or FastAPI.
