@@ -1,7 +1,7 @@
 # Tech Stack Used
 - Nextjs 14 ,app Router Ssr
 - Django DRF Sqlite 
-- 
+- Redux and Redux Persist to persist the userData 
 
 
 # Backend
