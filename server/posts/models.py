@@ -22,8 +22,8 @@ class Post(models.Model):
     content=models.CharField(max_length=400)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
     updated_at = models.DateTimeField(default=timezone.now)
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE, related_name='products')
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE, related_name='posts')
     tags = models.ManyToManyField(Tags)
-    users= models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')  
+    user= models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')  
   
     

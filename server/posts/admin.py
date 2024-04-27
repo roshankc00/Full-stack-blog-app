@@ -14,5 +14,5 @@ class TagsAdmin(admin.ModelAdmin):
     
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'content', 'category', 'users')
+    list_display = ('title', 'content', 'category', 'user')
     
