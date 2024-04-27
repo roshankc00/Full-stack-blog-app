@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from .models import Post, Categories,Tags
 from users.serializers import UserSerializers
-
+from comments.models import Comment
 
 
 class CategoriesSerializer(serializers.ModelSerializer):
@@ -14,49 +14,29 @@ class TagsSerializer(serializers.ModelSerializer):
     class Meta:
         model=Tags
         fields='__all__'
+        
+class GetCommentSerializer(serializers.ModelSerializer):
+    user=UserSerializers()
+    class Meta:
+        model = Comment
+        fields = ['id','content','post','user']
 
-
-# class PostSerializer(serializers.Serializer):
-#     category=CategoriesSerializer()
-#     tags = TagsSerializer(many=True)
-#     user=UserSerializers()
-#     class Meta:
-#         model=Post
-#         fields=["title",'content','category','tags','user']
-#         def create(self, validated_data):
-#           category_id = validated_data.pop('category')
-#           tags_ids = validated_data.pop('tags')
-#           user_id = validated_data.pop('user')
-#           post = Post.objects.create(category_id=category_id, user_id=user_id, **validated_data)
-#           post.tags.add(*tags_ids)
-#           return post
 
 class PostSerializer(serializers.ModelSerializer):
-    category_id = serializers.IntegerField()
-    tags_ids = serializers.ListField(child=serializers.IntegerField())
-    user_id = serializers.IntegerField()
-
     class Meta:
         model = Post
-        fields = ['title', 'content', 'category_id', 'tags_ids', 'user_id']
-
-    def create(self, validated_data):
-        category_id = validated_data.pop('category_id')
-        tags_ids = validated_data.pop('tags_ids')
-        user_id = validated_data.pop('user_id')
-
-        post = Post.objects.create(category_id=category_id, user_id=user_id, **validated_data)
-        post.tags.add(*tags_ids)
-
-        return post
-
-
+        fields = ['id','title', 'content', 'category', 'tags','user']
 
 class GetPostSerializer(serializers.ModelSerializer):
     category=CategoriesSerializer()
     tags = TagsSerializer(many=True)
     user=UserSerializers()
+    comments = serializers.SerializerMethodField()  
 
     class Meta:
         model = Post
-        fields = ['id','title', 'content', 'category', 'tags','user']
+        fields = ['id','title', 'content', 'category', 'tags','user','comments']
+    def get_comments(self, obj):
+        comments = Comment.objects.filter(post=obj)
+        serializer = GetCommentSerializer(comments, many=True)
+        return serializer.data
