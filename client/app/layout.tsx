@@ -2,10 +2,11 @@
 import { Provider } from "react-redux";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { store, persistor } from "../redux/store";
+import Navbar from "@/components/Navbar";
+import { Toaster } from "react-hot-toast";
 import { PersistGate } from "redux-persist/integration/react";
+import { persistor, store } from "@/store";
 const inter = Inter({ subsets: ["latin"] });
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -14,11 +15,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <>
-        {/* <PersistGate loading={null} persistor={persistor}> */}
-        <Provider store={store}>
-          <body className={inter.className}>{children}</body>
-        </Provider>
-        {/* </PersistGate> */}
+        <body className={inter.className}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <div>
+                <Navbar />
+                <Toaster />
+              </div>
+              <div className="mt-2">{children}</div>
+            </PersistGate>
+          </Provider>
+        </body>
       </>
     </html>
   );
