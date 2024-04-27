@@ -15,9 +15,8 @@ from .models import User
 def get_access_token(user):
     access_token = AccessToken.for_user(user)
     # access_token.set_exp(access_token.current_time + timedelta(days=7))
-    return {
-        'access':str(access_token)
-    }
+    return str(access_token)
+    
 
 
 class UserRegistrationView(APIView):
@@ -41,8 +40,10 @@ class UserLoginView(APIView):
             user= authenticate(email=email,password=password)
             if user is not None:
                 token =get_access_token(user)
+                user_serializer = UserSerializers(user) 
+                print(user_serializer.data.get("id"),"finnnnnnnnnnnnn")
                 print(token,"token")
-                return Response({'success':False,'token':token, 'msg':'Login Success'}, status=status.HTTP_200_OK)
+                return Response({'success':True,'token':token,'userId':user_serializer.data.get("id"),'name':user_serializer.data.get("name"), 'msg':'Login Success'}, status=status.HTTP_200_OK)
             else:
                 return Response({'success':False, 'message':"User not found"},status=status.HTTP_404_NOT_FOUND)     
         else:

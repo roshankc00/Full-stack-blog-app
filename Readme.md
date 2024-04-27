@@ -24,3 +24,7 @@
 
 - Write unit tests for backend and frontend components (aim for at least 50% code coverage).
 - Implement basic security measures (e.g., input validation, protection against common web vulnerabilities like XSS, CSRF).
+
+<image src='/Screenshot 2024-04-28 051832.png'/>
+<image src='/Screenshot 2024-04-28 051900.png'/>
+<image src='/Screenshot 2024-04-28 051942.png'/>

@@ -10,8 +10,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class CategoriesView(APIView):
     renderer_classes=[ResponseRenderer]
-    authentication_classes=[JWTAuthentication]
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    # authentication_classes=[JWTAuthentication]
+    # permission_classes=[IsAuthenticatedOrReadOnly]
     def post(self,request,format=None):
         serializer=CategoriesSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -48,8 +48,8 @@ class CategoriesView(APIView):
         
 class TagsView(APIView):
     renderer_classes=[ResponseRenderer]
-    authentication_classes=[JWTAuthentication]
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    # authentication_classes=[JWTAuthentication]
+    # permission_classes=[IsAuthenticatedOrReadOnly]
     def post(self,request,format=None):
         serializer=TagsSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):

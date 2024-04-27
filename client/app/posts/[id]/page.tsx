@@ -1,10 +1,4 @@
-"use client";
-import React from "react";
-import { CgProfile } from "react-icons/cg";
-import { FaComment } from "react-icons/fa";
-type Props = {
-  data: any;
-};
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -13,16 +7,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { IRootState } from "@/store";
-
-function PostCard({ data }: Props) {
-  const router = useRouter();
-  const { isLogedInStatus } = useSelector((state: IRootState) => state.auth);
+import { CgProfile } from "react-icons/cg";
+import { FaComment } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { Input } from "@/components/ui/input";
+import CreateComment from "./_components/CreateComment";
+const SinglePostPage = async ({ params }: { params: { id: number } }) => {
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/posts/${params.id}`
+  );
   return (
-    <div>
+    <div className="flex justify-center mt-5">
       <div className="mb-4">
         <Card className="w-[500px]">
           <CardHeader>
@@ -51,16 +47,8 @@ function PostCard({ data }: Props) {
                   {data?.comments.length}
                   <FaComment />
                 </div>
-                <div className="ms-[150px]">
-                  {isLogedInStatus && (
-                    <Button
-                      variant="outline"
-                      onClick={() => router.push(`posts/${data?.id}`)}
-                    >
-                      {" "}
-                      Tap to Comment
-                    </Button>
-                  )}
+                <div>
+                  <CreateComment postId={params.id} />
                 </div>
               </div>
               <div className="mt-4 flex flex-col justify-center">
@@ -81,6 +69,6 @@ function PostCard({ data }: Props) {
       </div>
     </div>
   );
-}
+};
 
-export default PostCard;
+export default SinglePostPage;
