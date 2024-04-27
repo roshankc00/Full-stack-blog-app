@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class CategoriesView(APIView):
     renderer_classes=[ResponseRenderer]
+    authentication_classes=[JWTAuthentication]
+    permission_classes=[IsAuthenticatedOrReadOnly]
     def post(self,request,format=None):
         serializer=CategoriesSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -46,6 +48,8 @@ class CategoriesView(APIView):
         
 class TagsView(APIView):
     renderer_classes=[ResponseRenderer]
+    authentication_classes=[JWTAuthentication]
+    permission_classes=[IsAuthenticatedOrReadOnly]
     def post(self,request,format=None):
         serializer=TagsSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -55,6 +59,8 @@ class TagsView(APIView):
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     def get(self,request,pk=None,format=None):
         if pk is not None:
+            userId=request.user.get('id')
+            print(userId)
             cat=Tags.objects.get(id=pk)
             serializer=TagsSerializer(cat)
             return Response(serializer.data)
@@ -82,8 +88,14 @@ class TagsView(APIView):
         
 class PostView(APIView):
     renderer_classes=[ResponseRenderer]
+    authentication_classes=[JWTAuthentication]
+    permission_classes=[IsAuthenticatedOrReadOnly]
     def post(self,request,format=None):
+        userId=request.user.id
+        request_data = request.data.copy()  
+        request_data['user'] = userId
         serializer=PostSerializer(data=request.data)
+        serializer.user = userId
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response({'success':True,'message':'Post created successfully'},status=status.HTTP_201_CREATED)           
